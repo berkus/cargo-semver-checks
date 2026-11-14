@@ -33,10 +33,13 @@ impl RustdocBuildEnvironment {
         // `RUSTDOCFLAGS`. We don't want rustc to fail that check if the user has set
         // `RUSTFLAGS="-Dwarnings"` here.
         // This fixes: https://github.com/obi1kenobi/cargo-semver-checks/issues/589
+        // `--cap-lints=warn` rather than `allow`: with `allow`, rustc also hides its
+        // "dropping unsupported crate type" warnings, which Cargo needs to probe no_std targets.
+        // See https://github.com/rust-lang/rust/issues/135233
         let cargo_rustflags = if flags.rustflags.is_empty() {
-            Cow::Borrowed("--cap-lints=allow")
+            Cow::Borrowed("--cap-lints=warn")
         } else {
-            Cow::Owned(format!("{} --cap-lints=allow", flags.rustflags))
+            Cow::Owned(format!("{} --cap-lints=warn", flags.rustflags))
         };
 
         // Preserve user rustdoc flags, including `--cfg <custom-value>` settings that toggle

@@ -94,3 +94,6 @@ pkg-fmt = "tgz"
 
 [package.metadata.binstall.overrides.x86_64-pc-windows-msvc]
 pkg-fmt = "zip"
+
+[patch.crates-io]
+trustfall_rustdoc = { path = "vendor/trustfall_rustdoc" }
